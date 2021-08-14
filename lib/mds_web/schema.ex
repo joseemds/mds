@@ -6,7 +6,16 @@ defmodule MdsWeb.Schema do
 
   query do
     field :user, list_of(:user) do
-      resolve(&Resolvers.UserResolver.list_users/3)
+      resolve(&Resolvers.AccountResolvers.list_users/3)
+    end
+  end
+
+  mutation do
+    @desc "Register a user"
+    field :create_user, :user do
+      arg(:user, non_null(:user_register))
+
+      resolve(&Resolvers.AccountResolvers.register_user/3)
     end
   end
 end

@@ -101,4 +101,9 @@ defmodule Mds.Accounts do
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
+
+  def register_user(attrs) do
+    User.register_changeset(%User{}, attrs)
+    |> Repo.insert()
+  end
 end

@@ -46,13 +46,25 @@ defmodule Mds.Accounts.User do
     |> unique_constraint(:email)
   end
 
-  defp validate_password(changeset, _opts) do
+  defp validate_password(changeset, opts) do
     changeset
     |> validate_required([:password])
     |> validate_length(:password, min: 12, max: 80)
     |> validate_format(:password, ~r/[a-z]/, message: "at least one lower case character")
     |> validate_format(:password, ~r/[A-Z]/, message: "at least one upper case character")
+    |> maybe_hash_password(opts)
+  end
 
-    # |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/, message: "at least one digit or punctuation character")
+  defp maybe_hash_password(changeset, opts) do
+    hash_password? = Keyword.get(opts, :hash_password, true)
+    password = get_change(changeset, :password)
+
+    if hash_password? && password && changeset.valid? do
+      changeset
+      |> put_change(:password_hash, Argon2.hash_pwd_salt(password))
+      |> delete_change(:password)
+    else
+      changeset
+    end
   end
 end
