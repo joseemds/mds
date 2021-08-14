@@ -1,11 +1,12 @@
 defmodule MdsWeb.Schema do
   use Absinthe.Schema
+  alias MdsWeb.Resolvers
+
+  import_types(__MODULE__.AccountTypes)
 
   query do
-
-    field :test, :string do
-      resolve fn _,_,_ -> {:ok, "Working"} end
+    field :user, list_of(:user) do
+      resolve(&Resolvers.UserResolver.list_users/3)
     end
-
   end
 end

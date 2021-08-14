@@ -3,16 +3,14 @@ defmodule MdsWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-
   end
 
   scope "/api", MdsWeb do
     pipe_through :api
 
-
     forward "/",
-      Absinthe.Plug,
-      schema: MdsWeb.Schema
+            Absinthe.Plug,
+            schema: MdsWeb.Schema
   end
 
   # Enables LiveDashboard only for development
@@ -31,12 +29,10 @@ defmodule MdsWeb.Router do
     end
   end
 
-
   if Mix.env() in [:dev] do
     forward "/graphiql",
-      Absinthe.Plug.GraphiQL,
-      schema: MdsWeb.Schema,
-      interface: :playground
-
+            Absinthe.Plug.GraphiQL,
+            schema: MdsWeb.Schema,
+            interface: :playground
   end
 end
