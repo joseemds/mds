@@ -17,5 +17,11 @@ defmodule MdsWeb.Schema do
 
       resolve(&Resolvers.AccountResolvers.register_user/3)
     end
+
+    field :login_user, :user do
+      arg(:user, non_null(:user_login))
+
+      resolve(&Resolvers.AccountResolvers.login_user/3)
+    end
   end
 end

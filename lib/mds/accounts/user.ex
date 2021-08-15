@@ -6,16 +6,25 @@ defmodule Mds.Accounts.User do
     field :username, :string
     field :email, :string
     field :password, :string, virtual: true
-    field :password_hash, :string, virtual: true
+    field :password_hash, :string
 
     timestamps()
   end
 
-  @doc false
-  def changeset(user, attrs) do
+  def email_login_changeset(user, attrs) do
     user
-    |> cast(attrs, [:username])
-    |> validate_required([:username])
+    |> cast(attrs, [:email, :password])
+    |> validate_email()
+    |> validate_password(hash_password: false)
+    |> verify_password()
+  end
+
+  def username_login_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:username, :password])
+    |> validate_username()
+    |> validate_password(hash_password: false)
+    |> verify_password(login_method: :username)
   end
 
   def register_changeset(user, attrs, opts \\ []) do
@@ -24,6 +33,8 @@ defmodule Mds.Accounts.User do
     |> validate_email()
     |> validate_username()
     |> validate_password(opts)
+    |> unsafe_validate_unique([:username, :email], Mds.Repo)
+    |> unique_constraint([:username, :email])
   end
 
   defp validate_username(changeset) do
@@ -33,8 +44,6 @@ defmodule Mds.Accounts.User do
       message: "Username can only contain numbers, letters, underscore and dot"
     )
     |> validate_length(:username, max: 20)
-    |> unsafe_validate_unique(:username, Mds.Repo)
-    |> unique_constraint(:username)
   end
 
   defp validate_email(changeset) do
@@ -42,8 +51,6 @@ defmodule Mds.Accounts.User do
     |> validate_required([:email])
     |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
     |> validate_length(:email, max: 160)
-    |> unsafe_validate_unique(:email, Mds.Repo)
-    |> unique_constraint(:email)
   end
 
   defp validate_password(changeset, opts) do
@@ -66,5 +73,22 @@ defmodule Mds.Accounts.User do
     else
       changeset
     end
+  end
+
+  defp verify_password(changeset, opts \\ []) do
+    login_method = Keyword.get(opts, :login_method, :email)
+
+    password = get_field(changeset, :password)
+
+    case login_method do
+      :email ->
+        changeset
+        |> Mds.Accounts.get_user_by_email()
+
+      :username ->
+        changeset
+        |> Mds.Accounts.get_user_by_username()
+    end
+    |> Argon2.check_pass(password)
   end
 end
