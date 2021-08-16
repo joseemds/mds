@@ -5,7 +5,7 @@ defmodule MdsWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", MdsWeb do
+  scope "/api" do
     pipe_through :api
 
     forward "/",
