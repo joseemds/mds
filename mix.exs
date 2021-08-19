@@ -46,7 +46,8 @@ defmodule Mds.MixProject do
       {:absinthe, "~> 1.6"},
       {:absinthe_plug, "~> 1.5"},
       {:argon2_elixir, "~> 2.0"},
-      {:guardian, "~> 2.1"},
+      {:bodyguard, "~> 2.4"},
+      {:speakeasy, "~> 0.3"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:pre_commit, "~> 0.3.4", only: :dev}
     ]
