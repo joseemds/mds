@@ -1,4 +1,4 @@
-defmodule MdsWeb.Resolvers.AccountResolvers do
+defmodule MdsWeb.Resolvers.AccountsResolvers do
   alias Mds.Accounts
 
   def list_users(_, _, _) do
@@ -8,12 +8,10 @@ defmodule MdsWeb.Resolvers.AccountResolvers do
   def register_user(_parent, %{user: user}, _context) do
     case Accounts.register_user(user) do
       {:ok, result} -> {:ok, result}
-      #TODO: Handle this
-      {:error, _} -> {:error, message: "Something went wrong"}
+      # TODO: Handle this
+      {:error, changeset} -> {:error, message: "Something went wrong"}
     end
-
   end
-
 
   def login_user(_parent, %{user: %{login: login, type: type, password: password}}, _context) do
     case type do

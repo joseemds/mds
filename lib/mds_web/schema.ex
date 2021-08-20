@@ -1,27 +1,18 @@
 defmodule MdsWeb.Schema do
   use Absinthe.Schema
-  alias MdsWeb.Resolvers
+  alias __MODULE__.Types
+  alias __MODULE__.Queries
+  alias __MODULE__.Mutations
 
-  import_types(__MODULE__.AccountTypes)
+  import_types(Types.AccountsTypes)
+  import_types(Queries.AccountsQueries)
+  import_types(Mutations.AccountsMutations)
 
   query do
-    field :user, list_of(:user) do
-      resolve(&Resolvers.AccountResolvers.list_users/3)
-    end
+    import_fields(:accounts_queries)
   end
 
   mutation do
-    @desc "Register a user"
-    field :create_user, :user do
-      arg(:user, non_null(:user_register))
-
-      resolve(&Resolvers.AccountResolvers.register_user/3)
-    end
-
-    field :login_user, :user do
-      arg(:user, non_null(:user_login))
-
-      resolve(&Resolvers.AccountResolvers.login_user/3)
-    end
+    import_fields(:accounts_mutations)
   end
 end
