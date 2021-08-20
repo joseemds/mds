@@ -9,20 +9,26 @@ defmodule MdsWeb.Resolvers.AccountsResolvers do
     case Accounts.register_user(user) do
       {:ok, result} -> {:ok, result}
       # TODO: Handle this
-      {:error, changeset} -> {:error, message: "Something went wrong"}
+      {:error, _changeset} -> {:error, message: "Something went wrong"}
     end
   end
 
   def login_user(_parent, %{user: %{login: login, type: type, password: password}}, _context) do
-    case type do
-      :email ->
-        Accounts.User.email_login_changeset(%Accounts.User{}, %{email: login, password: password})
+    user_changeset =
+      case type do
+        :email ->
+          Accounts.User.email_login_changeset(%Accounts.User{}, %{
+            email: login,
+            password: password
+          })
 
-      :username ->
-        Accounts.User.username_login_changeset(%Accounts.User{}, %{
-          username: login,
-          password: password
-        })
-    end
+        :username ->
+          Accounts.User.username_login_changeset(%Accounts.User{}, %{
+            username: login,
+            password: password
+          })
+      end
+
+    Accounts.authenticate_user(user_changeset)
   end
 end

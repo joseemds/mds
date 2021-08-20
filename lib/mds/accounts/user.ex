@@ -90,5 +90,9 @@ defmodule Mds.Accounts.User do
         |> Mds.Accounts.get_user_by_username()
     end
     |> Argon2.check_pass(password)
+    |> case do
+      {:ok, _user} -> changeset
+      {:error, reason} -> add_error(changeset, :password, reason)
+    end
   end
 end

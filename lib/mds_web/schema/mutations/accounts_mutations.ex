@@ -10,7 +10,7 @@ defmodule MdsWeb.Schema.Mutations.AccountsMutations do
       resolve(&Resolvers.AccountsResolvers.register_user/3)
     end
 
-    field :login_user, :user do
+    field :login_user, non_null(:auth_token) do
       arg(:user, non_null(:user_login))
 
       resolve(&Resolvers.AccountsResolvers.login_user/3)

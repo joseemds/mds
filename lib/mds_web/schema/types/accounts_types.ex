@@ -7,6 +7,10 @@ defmodule MdsWeb.Schema.Types.AccountsTypes do
     field :email, non_null(:string)
   end
 
+  object :auth_token do
+    field :token, non_null(:string)
+  end
+
   input_object :user_register do
     field :username, non_null(:string)
     field :email, non_null(:string)

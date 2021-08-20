@@ -5,7 +5,6 @@ defmodule Mds.Accounts do
 
   import Ecto.Query, warn: false
   alias Mds.Repo
-
   alias Mds.Accounts.User
 
   @doc """
@@ -66,5 +65,23 @@ defmodule Mds.Accounts do
   def get_user_by_username(changeset) do
     username = Ecto.Changeset.get_field(changeset, :username)
     Repo.get_by(User, username: username)
+  end
+
+  def authenticate_user(%Ecto.Changeset{changes: %{username: _username}} = changeset) do
+    {:ok, token, _claims} =
+      changeset
+      |> get_user_by_username()
+      |> Mds.Guardian.encode_and_sign()
+
+    {:ok, token: token}
+  end
+
+  def authenticate_user(%Ecto.Changeset{changes: %{email: _email}} = changeset) do
+    {:ok, token, _claims} =
+      changeset
+      |> get_user_by_email()
+      |> Mds.Guardian.encode_and_sign()
+
+    {:ok, %{token: token}}
   end
 end
