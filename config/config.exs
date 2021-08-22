@@ -26,6 +26,10 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :pre_commit,
+  commands: ["test", "credo"],
+  verbose: true
+
 config :mds, Mds.Guardian,
   issuer: "mds",
   secret_key: "v27UZB2N2ATNn2otf6i0ce7QCo1W1uXzmcIGCm3LGCcerxDfxjugv/WJw5tHro1J"
