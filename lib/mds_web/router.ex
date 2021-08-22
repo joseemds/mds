@@ -3,14 +3,24 @@ defmodule MdsWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug MdsWeb.Plugs.Context
   end
 
   scope "/api" do
     pipe_through :api
 
+
+    if Mix.env() in [:dev] do
+      forward "/graphiql",
+              Absinthe.Plug.GraphiQL,
+              schema: MdsWeb.Schema,
+              interface: :playground
+    end
+
     forward "/",
             Absinthe.Plug,
             schema: MdsWeb.Schema
+
   end
 
   # Enables LiveDashboard only for development
@@ -27,12 +37,5 @@ defmodule MdsWeb.Router do
       pipe_through [:fetch_session, :protect_from_forgery]
       live_dashboard "/dashboard", metrics: MdsWeb.Telemetry
     end
-  end
-
-  if Mix.env() in [:dev] do
-    forward "/graphiql",
-            Absinthe.Plug.GraphiQL,
-            schema: MdsWeb.Schema,
-            interface: :playground
   end
 end
