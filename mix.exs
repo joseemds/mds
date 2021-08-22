@@ -11,13 +11,13 @@ defmodule Mds.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-         test_coverage: [tool: ExCoveralls],
-    preferred_cli_env: [
-      coveralls: :test,
-      "coveralls.detail": :test,
-      "coveralls.post": :test,
-      "coveralls.html": :test
-    ]
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -55,8 +55,8 @@ defmodule Mds.MixProject do
       {:argon2_elixir, "~> 2.0"},
       {:guardian, "~> 2.1"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
-      {:pre_commit, "~> 0.3.4", only: :dev},
-      {:excoveralls, "~> 0.10", only: :test},
+      {:git_hooks, "~> 0.6.3", only: [:dev], runtime: false},
+      {:excoveralls, "~> 0.10", only: :test}
     ]
   end
 
