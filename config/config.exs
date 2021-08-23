@@ -30,26 +30,6 @@ config :mds, Mds.Guardian,
   issuer: "mds",
   secret_key: "v27UZB2N2ATNn2otf6i0ce7QCo1W1uXzmcIGCm3LGCcerxDfxjugv/WJw5tHro1J"
 
-if Mix.env() == :dev do
-  config :git_hooks,
-    auto_install: true,
-    verbose: true,
-    hooks: [
-      pre_commit: [
-        tasks: [
-          {:cmd, "mix format --check-formatted"}
-        ]
-      ],
-      pre_push: [
-        verbose: false,
-        tasks: [
-          {:cmd, "mix test --color"},
-          {:cmd, "echo 'success!'"}
-        ]
-      ]
-    ]
-end
-
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

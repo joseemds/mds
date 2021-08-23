@@ -55,3 +55,28 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :git_hooks,
+  auto_install: true,
+  verbose: true,
+  hooks: [
+    pre_commit: [
+      tasks: [
+        {:cmd, "mix format --check-formatted"}
+      ]
+    ],
+    pre_push: [
+      verbose: false,
+      tasks: [
+        {:cmd, "mix test --color"},
+        {:cmd, "echo 'success!'"}
+      ]
+    ]
+  ]
+
+config :mix_test_watch,
+  tasks: [
+    "test",
+    "format",
+    "coveralls"
+  ]
