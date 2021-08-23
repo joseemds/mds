@@ -57,7 +57,8 @@ defmodule Mds.MixProject do
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:git_hooks, "~> 0.6.3", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.10", only: :test},
-      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
+      {:mix_test_watch, "~> 1.0", only: :dev, runtime: false}
     ]
   end
 

@@ -4,7 +4,7 @@ defmodule MdsWeb.SchemaTest do
   @list_users_query """
 
   query {
-    user {
+    users {
       id
       username
     }
@@ -16,14 +16,11 @@ defmodule MdsWeb.SchemaTest do
     conn =
       conn
       |> post("/api", %{
-          "query" => @list_users_query
-              })
+        "query" => @list_users_query
+      })
 
-
-      assert json_response(conn, 200) == %{
-        "data" => %{"user" => []}
-      }
-
+    assert json_response(conn, 200) == %{
+             "data" => %{"users" => []}
+           }
   end
-  
 end
