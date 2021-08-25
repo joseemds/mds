@@ -78,6 +78,5 @@ config :git_hooks,
 config :mix_test_watch,
   tasks: [
     "test",
-    "format",
     "coveralls"
   ]
