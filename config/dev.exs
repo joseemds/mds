@@ -62,14 +62,15 @@ config :git_hooks,
   hooks: [
     pre_commit: [
       tasks: [
-        {:cmd, "mix format --check-formatted"}
+        {:mix_task, :format},
+        {:mix_task, :test, ["--trace"]}
       ]
     ],
     pre_push: [
-      verbose: false,
+      verbose: true,
       tasks: [
-        {:cmd, "mix test --color"},
-        {:cmd, "echo 'success!'"}
+        {:mix_task, :format, ["--check-formatted"]},
+        {:mix_task, :test, ["--trace"]}
       ]
     ]
   ]

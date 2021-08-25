@@ -35,8 +35,8 @@ defmodule MdsWeb.SchemaTest do
   }
   """
 
-  describe "Accounts: " do
-    test "Users query should return an empty list when no user is provided", %{conn: conn} do
+  describe "Users query" do
+    test "should return an empty list when no user is provided", %{conn: conn} do
       conn =
         conn
         |> post("/api", %{
@@ -47,7 +47,9 @@ defmodule MdsWeb.SchemaTest do
                "data" => %{"users" => []}
              }
     end
+  end
 
+  describe "createUser mutation" do
     test "createUser mutation should insert an user into the database", %{conn: conn} do
       conn =
         conn
@@ -81,19 +83,21 @@ defmodule MdsWeb.SchemaTest do
 
       assert length(users) > 0
     end
+  end
 
-    test "registerUser should return a token that retrieves the user", %{conn: conn} do
-      conn =
-        conn
-        |> post("/api", %{
-          "query" => @create_user_mutation,
-          "variables" => %{
-            user: %{username: "test1", email: "test1@email.com", password: "Testpassword1234"}
-          }
+  describe "registerUser mutation" do
+    setup do
+      {:ok, user} =
+        Mds.Accounts.register_user(%{
+          username: "test1",
+          email: "test1@email.com",
+          password: "Testpassword1234"
         })
 
-      user = conn |> json_response(200) |> Map.get("data") |> Map.get("createUser")
+      %{user: Map.take(user, ~w(username email)a)}
+    end
 
+    test "registerUser should return a token that retrieves the user", %{conn: conn, user: user} do
       conn =
         conn
         |> post("/api", %{
@@ -103,23 +107,16 @@ defmodule MdsWeb.SchemaTest do
           }
         })
 
-      token =
-        conn
-        |> json_response(200)
-        |> Map.get("data")
-        |> Map.get("loginUser")
-        |> Map.get("token")
+      token = json_response(conn, 200)["data"]["loginUser"]["token"]
 
       db_user =
         with {:ok, claims} <- Mds.Guardian.decode_and_verify(token) do
           {:ok, db_user} = Mds.Guardian.resource_from_claims(claims)
 
-          Map.take(db_user, ~w(email username)a)
-          |> Enum.map(fn {k, v} -> {Atom.to_string(k), v} end)
-          |> Enum.into(%{})
+          db_user |> Map.take(~w(username email)a)
         end
 
-      assert user == db_user
+      assert Map.values(user) == Map.values(db_user)
     end
   end
 
