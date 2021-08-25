@@ -27,6 +27,14 @@ defmodule MdsWeb.SchemaTest do
   }
   """
 
+  @current_user_query """
+  query {
+    currentUser {
+      username
+    }
+  }
+  """
+
   describe "Accounts: " do
     test "Users query should return an empty list when no user is provided", %{conn: conn} do
       conn =
@@ -71,7 +79,7 @@ defmodule MdsWeb.SchemaTest do
         |> Map.get("data")
         |> Map.get("users")
 
-      assert users > 0
+      assert length(users) > 0
     end
 
     test "registerUser should return a token that retrieves the user", %{conn: conn} do
@@ -112,6 +120,45 @@ defmodule MdsWeb.SchemaTest do
         end
 
       assert user == db_user
+    end
+  end
+
+  describe "CurrentUser queries" do
+    setup do
+      {:ok, user} =
+        Mds.Accounts.register_user(%{
+          username: "Test1",
+          email: "email@email.com",
+          password: "Passwordtest123"
+        })
+
+      {:ok, token, _claims} = Mds.Guardian.encode_and_sign(user)
+
+      %{user: user, token: token}
+    end
+
+    test "CurrentUser should return the user equivalent to the JWT token", %{
+      conn: conn,
+      user: user,
+      token: token
+    } do
+      conn =
+        conn
+        |> put_req_header("authorization", "Bearer #{token}")
+        |> post("/api", %{"query" => @current_user_query})
+
+      result = conn |> json_response(200)
+
+      %{username: username} = user
+
+      assert result["data"]["currentUser"]["username"] == username
+    end
+
+    @tag :skip
+    test "CurrentUser without Authorization header should return error and reason", %{conn: conn} do
+      conn =
+        conn
+        |> post("/api", %{"query" => @current_user_query})
     end
   end
 end
