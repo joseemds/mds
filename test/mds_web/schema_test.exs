@@ -136,11 +136,26 @@ defmodule MdsWeb.SchemaTest do
       assert result["data"]["currentUser"]["username"] == username
     end
 
-    @tag :skip
     test "CurrentUser without Authorization header should return error and reason", %{conn: conn} do
       conn =
         conn
         |> post("/api", %{"query" => @current_user_query})
+
+
+
+      response = json_response(conn, 200)
+
+
+      assert response["data"]["currentUser"] == nil
+
+
+      [error | []] = response["errors"]
+
+
+      error_message = error["message"]
+
+      assert error_message == "Unauthenticated, please provide an Authentication Token"
+
     end
   end
 end
