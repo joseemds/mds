@@ -58,7 +58,9 @@ defmodule Mds.MixProject do
       {:git_hooks, "~> 0.6.3", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.10", only: :test},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
-      {:mix_test_watch, "~> 1.0", only: :dev, runtime: false}
+      {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
+      {:ex_machina, "~> 2.7", only: :test},
+      {:faker, "~> 0.16", only: :test}
     ]
   end
 

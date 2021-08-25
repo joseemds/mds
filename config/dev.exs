@@ -63,13 +63,15 @@ config :git_hooks,
     pre_commit: [
       tasks: [
         {:mix_task, :format},
-        {:mix_task, :test, ["--trace"]}
+        {:mix_task, :test, ["--trace"]},
+        
       ]
     ],
     pre_push: [
       verbose: true,
       tasks: [
         {:mix_task, :format, ["--check-formatted"]},
+        {:mix_task, :credo},
         {:mix_task, :test, ["--trace"]}
       ]
     ]

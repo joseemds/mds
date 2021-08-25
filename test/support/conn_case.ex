@@ -25,6 +25,8 @@ defmodule MdsWeb.ConnCase do
       import MdsWeb.ConnCase
 
       alias MdsWeb.Router.Helpers, as: Routes
+      alias Mds.Factory
+      alias Mds.Fixtures
 
       # The default endpoint for testing
       @endpoint MdsWeb.Endpoint
