@@ -1,4 +1,8 @@
 defmodule MdsWeb.Schema do
+  @moduledoc """
+  `MdsWeb.Schema` is the entrypoint of the GraphQL application
+  """
+
   use Absinthe.Schema
   alias __MODULE__.Types
   alias __MODULE__.Queries

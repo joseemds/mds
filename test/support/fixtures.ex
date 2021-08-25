@@ -1,4 +1,5 @@
 defmodule Mds.Fixtures do
+  @moduledoc false
   use ExMachina.Ecto, repo: Mds.Repo
 
   alias Mds.Factory

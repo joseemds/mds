@@ -1,4 +1,7 @@
 defmodule MdsWeb.Resolvers.AccountsResolvers do
+  @moduledoc """
+  Resolvers for handling with users queries or mutations
+  """
   alias Mds.Accounts
 
   def list_users(_, _, _) do

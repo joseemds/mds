@@ -97,11 +97,7 @@ defmodule MdsWeb.SchemaTest do
           }
         })
 
-      require IEx
-      IEx.pry()
-
       token = json_response(conn, 200)["data"]["loginUser"]["token"]
-      IO.inspect(token, label: "Token")
 
       db_user =
         with {:ok, claims} <- Mds.Guardian.decode_and_verify(token) do

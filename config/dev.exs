@@ -63,8 +63,7 @@ config :git_hooks,
     pre_commit: [
       tasks: [
         {:mix_task, :format},
-        {:mix_task, :test, ["--trace"]},
-        
+        {:mix_task, :test, ["--trace"]}
       ]
     ],
     pre_push: [

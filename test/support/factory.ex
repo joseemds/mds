@@ -1,4 +1,5 @@
 defmodule Mds.Factory do
+  @moduledoc false
   def user_factory do
     %{
       username: Faker.Internet.user_name(),

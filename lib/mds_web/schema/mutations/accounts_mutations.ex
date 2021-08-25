@@ -1,4 +1,8 @@
 defmodule MdsWeb.Schema.Mutations.AccountsMutations do
+  @moduledoc """
+  Mutations to interact with users in the database
+  """
+
   alias MdsWeb.Resolvers
   use Absinthe.Schema.Notation
 

@@ -1,4 +1,7 @@
 defmodule MdsWeb.Schema.Types.AccountsTypes do
+  @moduledoc """
+  GraphQL notations of things related to user operation
+  """
   use Absinthe.Schema.Notation
 
   object :user do

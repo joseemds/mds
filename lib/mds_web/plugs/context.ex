@@ -1,4 +1,8 @@
 defmodule MdsWeb.Plugs.Context do
+  @moduledoc """
+  Plug to add the current user when authorization header is provided
+  """
+
   @behaviour Plug
 
   import Plug.Conn
@@ -7,6 +11,7 @@ defmodule MdsWeb.Plugs.Context do
 
   def call(conn, _) do
     context = build_context(conn)
+
     Absinthe.Plug.put_options(conn, context: context)
   end
 

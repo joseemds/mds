@@ -1,4 +1,5 @@
 defmodule Mds.Guardian do
+  @moduledoc false
   use Guardian, otp_app: :mds
 
   def subject_for_token(resource, _claims) do

@@ -1,4 +1,8 @@
 defmodule MdsWeb.Schema.Queries.AccountsQueries do
+  @moduledoc """
+  Queries for fetching user data from database
+  """
+
   alias MdsWeb.Resolvers
   use Absinthe.Schema.Notation
 

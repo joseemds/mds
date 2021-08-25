@@ -2,6 +2,11 @@ defmodule Mds.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @moduledoc """
+  This module represents the schema of a user, providing changesets to
+  login, register, etc
+  """
+
   schema "users" do
     field :username, :string
     field :email, :string
