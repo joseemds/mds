@@ -12,6 +12,7 @@ defmodule Mds.Accounts.User do
     field :email, :string
     field :password, :string, virtual: true
     field :password_hash, :string
+    has_many :questions, Mds.Questions.Question
 
     timestamps()
   end
