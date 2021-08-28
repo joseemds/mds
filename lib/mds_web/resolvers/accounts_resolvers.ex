@@ -16,21 +16,10 @@ defmodule MdsWeb.Resolvers.AccountsResolvers do
     end
   end
 
-  def login_user(_parent, %{user: %{login: login, type: type, password: password}}, _context) do
-    user_changeset =
-      case type do
-        :email ->
-          Accounts.User.email_login_changeset(%Accounts.User{}, %{
-            email: login,
-            password: password
-          })
+  def login_user(_parent, %{user: %{type: type, login: login}} = attrs, _context) do
+    attrs = Map.put(attrs, type, login)
 
-        :username ->
-          Accounts.User.username_login_changeset(%Accounts.User{}, %{
-            username: login,
-            password: password
-          })
-      end
+    user_changeset = Accounts.User.login_changeset(%Accounts.User{}, attrs, type)
 
     Accounts.authenticate_user(user_changeset)
   end

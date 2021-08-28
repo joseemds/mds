@@ -16,20 +16,20 @@ defmodule Mds.Accounts.User do
     timestamps()
   end
 
-  def email_login_changeset(user \\ %__MODULE__{}, attrs) do
-    user
-    |> cast(attrs, [:email, :password])
-    |> validate_email()
-    |> validate_password(hash_password: false)
-    |> verify_password()
-  end
-
-  def username_login_changeset(user, attrs) do
+  def login_changeset(user, attrs, :username) do
     user
     |> cast(attrs, [:username, :password])
     |> validate_username()
     |> validate_password(hash_password: false)
     |> verify_password(login_method: :username)
+  end
+
+  def login_changeset(user, attrs, :email) do
+    user
+    |> cast(attrs, [:email, :password])
+    |> validate_email()
+    |> validate_password(hash_password: false)
+    |> verify_password()
   end
 
   def register_changeset(user, attrs, opts \\ []) do
