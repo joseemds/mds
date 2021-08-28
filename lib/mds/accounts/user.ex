@@ -16,7 +16,7 @@ defmodule Mds.Accounts.User do
     timestamps()
   end
 
-  def email_login_changeset(user, attrs) do
+  def email_login_changeset(user \\ %__MODULE__{}, attrs) do
     user
     |> cast(attrs, [:email, :password])
     |> validate_email()

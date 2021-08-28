@@ -75,27 +75,27 @@ defmodule MdsWeb.SchemaTest do
     end
   end
 
-  describe "loginUser mutation" do
+  describe "loginUser mutation:" do
     setup do
-      user_data = Factory.user_factory()
-      {:ok, user} = Mds.Accounts.register_user(user_data)
+      user = Fixtures.fixture(:register_user)
 
-      %{user: Map.take(user, ~w(username email)a), user_data: user_data}
+      %{user: Map.take(user, ~w(username email password)a)}
     end
 
     test "loginUser should return a token that retrieves the user", %{
       conn: conn,
-      user: user,
-      user_data: user_data
+      user: user
     } do
       conn =
         conn
         |> post("/api", %{
           "query" => @login_user_mutation,
           "variables" => %{
-            user: %{type: "EMAIL", login: user_data.email, password: user_data.password}
+            user: %{type: "EMAIL", login: user.email, password: user.password}
           }
         })
+
+      user = Map.delete(user, :password)
 
       token = json_response(conn, 200)["data"]["loginUser"]["token"]
 
@@ -112,7 +112,7 @@ defmodule MdsWeb.SchemaTest do
 
   describe "CurrentUser queries" do
     setup do
-      {:ok, user} = Mds.Accounts.register_user(Factory.user_factory())
+      user = Fixtures.insert(:user)
 
       {:ok, token, _claims} = Mds.Guardian.encode_and_sign(user)
 
