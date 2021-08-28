@@ -17,4 +17,12 @@ defmodule Mds.Questions.Question do
     |> cast(attrs, [:title, :body, :solved])
     |> validate_required([:title, :body])
   end
+
+  def data() do
+    Dataloader.Ecto.new(Mds.Repo, query: &query/2)
+  end
+
+  def query(queryable, _params) do
+    queryable
+  end
 end

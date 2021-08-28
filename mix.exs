@@ -52,6 +52,7 @@ defmodule Mds.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:absinthe, "~> 1.6"},
       {:absinthe_plug, "~> 1.5"},
+      {:dataloader, "~> 1.0"},
       {:argon2_elixir, "~> 2.0"},
       {:guardian, "~> 2.1"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},

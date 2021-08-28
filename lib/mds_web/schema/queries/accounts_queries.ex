@@ -13,7 +13,7 @@ defmodule MdsWeb.Schema.Queries.AccountsQueries do
 
     field :current_user, :user do
       middleware(MdsWeb.Middlewares.Authentication)
-      resolve(fn _, %{context: %{current_user: current_user}} -> {:ok, current_user} end)
+      resolve(&Resolvers.AccountsResolvers.current_user/2)
     end
   end
 end

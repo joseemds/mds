@@ -101,4 +101,12 @@ defmodule Mds.Accounts.User do
       {:error, reason} -> add_error(changeset, :password, reason)
     end
   end
+
+  def data() do
+    Dataloader.Ecto.new(Mds.Repo, query: &query/2)
+  end
+
+  def query(queryable, _params) do
+    queryable
+  end
 end

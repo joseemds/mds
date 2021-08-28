@@ -23,4 +23,8 @@ defmodule MdsWeb.Resolvers.AccountsResolvers do
 
     Accounts.authenticate_user(user_changeset)
   end
+
+  def current_user(_parent, %{context: %{current_user: current_user}}) do
+    {:ok, current_user}
+  end
 end

@@ -3,11 +3,13 @@ defmodule MdsWeb.Schema.Types.AccountsTypes do
   GraphQL notations of things related to user operation
   """
   use Absinthe.Schema.Notation
+  import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 
   object :user do
     field :id, non_null(:id)
     field :username, non_null(:string)
     field :email, non_null(:string)
+    field :questions, non_null(list_of(:question)), resolve: dataloader(Mds.Questions.Question)
   end
 
   object :auth_token do
