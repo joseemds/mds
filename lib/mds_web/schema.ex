@@ -12,6 +12,7 @@ defmodule MdsWeb.Schema do
   alias __MODULE__.Mutations
 
   import_types(Types.QuestionsTypes)
+  import_types(Mutations.QuestionsMutations)
 
   import_types(Types.AccountsTypes)
   import_types(Queries.AccountsQueries)
@@ -23,6 +24,7 @@ defmodule MdsWeb.Schema do
 
   mutation do
     import_fields(:accounts_mutations)
+    import_fields(:questions_mutations)
   end
 
   def context(ctx) do

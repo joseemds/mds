@@ -6,4 +6,9 @@ defmodule MdsWeb.Schema.Types.QuestionsTypes do
     field :title, non_null(:string)
     field :body, non_null(:string)
   end
+
+  input_object :create_question do
+    field :title, non_null(:string)
+    field :body, non_null(:string)
+  end
 end
